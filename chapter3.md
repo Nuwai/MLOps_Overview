@@ -1,82 +1,81 @@
-📘 Chapter 3 — REST & API Fundamentals for ML Engineers
-🧠 3.1 Introduction
+# 📘 Chapter 3 — REST & API Fundamentals for ML Engineers
 
-APIs are the backbone of modern ML deployment.
+## 🧠 3.1 Introduction
+
+APIs are the **backbone of modern ML deployment**.
+
 To deploy machine learning models in production, you must understand:
 
-What APIs are
+- What APIs are  
+- How HTTP works  
+- How REST is designed  
+- JSON structure  
+- Status codes  
+- Best practices  
 
-How HTTP works
+This chapter provides a **beginner-friendly but complete** understanding of REST fundamentals from an ML engineering perspective.
 
-How REST is designed
+---
 
-JSON structure
+# 📍 3.2 What Is an API?
 
-Status codes
-
-Best practices
-
-This chapter gives a beginner-friendly but complete understanding of REST fundamentals from an ML engineering perspective.
-
-📍 3.2 What Is an API?
-
-API = Application Programming Interface
+**API = Application Programming Interface**  
 It allows two software systems to communicate.
 
-Simple analogy:
+### 🔹 Simple Analogy
+An API is like a **restaurant waiter**:
+- You (client) place an order → waiter sends it to kitchen  
+- Kitchen (server) prepares food  
+- Waiter returns the result  
 
-An API is like a restaurant waiter.
-You tell the waiter what you want → the waiter returns your order.
+### 🔹 In ML Context
+- Client sends **input data**  
+- ML API returns **model predictions**
 
-In ML:
+### Examples
+- Email validation API  
+- Text sentiment API  
+- Image classification API  
+- Fraud detection service  
 
-The client sends input data
+---
 
-The ML API returns model predictions
+# 📍 3.3 What Is HTTP?
 
-Examples:
+**HTTP = HyperText Transfer Protocol**  
+It is the language used when browsers, apps, and servers communicate.
 
-Email validation API
+### 🔹 Key Concepts
+- **Client** → sends a request  
+- **Server** → sends a response  
 
-Computer vision inference API
+### ASCII Diagram
 
-Fraud detection ML service
+```
+Client (App / User)
+        │
+        │  HTTP Request
+        ▼
+    ML API Server
+        │
+        │  HTTP Response
+        ▼
+     Prediction Output
+```
 
-📍 3.3 What Is HTTP?
+---
 
-HTTP = HyperText Transfer Protocol
-It is the language of the web, used when browsers, apps, and servers communicate.
+# 📍 3.4 HTTP Requests vs Responses
 
-Key concepts:
+## 🔹 HTTP Request Includes:
+- URL  
+- Method (GET, POST, PUT, DELETE…)  
+- Headers  
+- Body (for POST/PUT)  
 
-Client → sends a request
+### Example Request
 
-Server → sends a response
-
-ASCII Diagram
-Client (User/App/Frontend)
-           │
-           │ HTTP Request
-           ▼
-      ML API Server
-           │
-           │ HTTP Response
-           ▼
-        Prediction
-
-📍 3.4 HTTP Requests vs Responses
-HTTP Request Includes:
-
-URL
-
-Method (GET, POST, etc.)
-
-Headers
-
-Body (for POST/PUT)
-
-Example request:
-
+```
 POST /predict
 Content-Type: application/json
 
@@ -84,195 +83,230 @@ Content-Type: application/json
   "age": 30,
   "income": 50000
 }
+```
 
-HTTP Response Includes:
+---
 
-Status code
+## 🔹 HTTP Response Includes:
+- Status code  
+- Headers  
+- Body (JSON, text, image…)  
 
-Headers
+### Example Response
 
-Body (JSON, text, image…)
-
-Example response:
-
+```
 200 OK
 {
   "prediction": "approved",
   "score": 0.87
 }
+```
 
-📍 3.5 HTTP Methods
-Method	Meaning	ML Usage
-GET	Read data	Health check, metadata
-POST	Send data	ML predictions
-PUT	Replace data	Model config update
-PATCH	Partial update	Updating model parameters
-DELETE	Remove resource	Delete model version
-Practical Example:
+---
 
-To get predictions, we usually use:
+# 📍 3.5 HTTP Methods
 
+| Method | Meaning | ML Usage |
+|--------|---------|----------|
+| **GET** | Retrieve data | Health check, metadata |
+| **POST** | Send data | ML predictions |
+| **PUT** | Replace item | Update model config |
+| **PATCH** | Partial update | Update certain fields |
+| **DELETE** | Remove resource | Delete model version |
+
+### Example (ML Prediction)
+```
 POST /predict
+```
+We use `POST` because we're sending **input data**, not retrieving static content.
 
+---
 
-Because we are sending input data, not retrieving static content.
+# 📍 3.6 What Is JSON?
 
-📍 3.6 What Is JSON?
+**JSON = JavaScript Object Notation**  
+It is the most common format for web and ML API communication.
 
-JSON = JavaScript Object Notation
-It is the most common format for API data exchange.
+### Example JSON
 
-Example
+```json
 {
   "name": "Alice",
   "age": 25,
   "is_member": true
 }
+```
 
+### Why JSON?
+- Human readable  
+- Lightweight  
+- Language independent  
+- Fast to parse  
+- FastAPI automatically converts JSON → Python objects  
 
-JSON is:
+---
 
-Human readable
+# 📍 3.7 What Is REST?
 
-Language independent
+**REST = Representational State Transfer**  
+A design style for creating scalable, well-structured APIs.
 
-Lightweight
+### 🔹 REST Principles
+- Stateless  
+- Client–server separation  
+- Resource-based endpoints  
+- Standard methods (GET, POST…)  
+- Structured responses  
 
-FastAPI automatically parses JSON into Python objects.
+### RESTful Endpoint Examples
 
-📍 3.7 What Is REST?
-
-REST = Representational State Transfer
-It is an architectural style for designing clean, scalable APIs.
-
-REST Principles:
-
-Stateless
-
-Client–server separation
-
-Clear resource naming
-
-Standardized HTTP methods
-
-Structured responses
-
-Examples of RESTful endpoints:
+```
 GET /users
 GET /users/123
 POST /users
 PUT /users/123
 DELETE /users/123
+```
 
+### ML API Examples
 
-For ML APIs, typical endpoints include:
-
+```
 POST /predict
 GET /health
 GET /model/info
+```
 
-📍 3.8 REST Best Practices (Important for ML APIs)
+---
 
-Use nouns, not verbs, in URLs
+# 📍 3.8 REST Best Practices (Important for ML APIs)
 
-❌ /getPrediction
+### ❌ Bad
+```
+/getPrediction
+```
 
-✔️ /predict
+### ✔️ Good
+```
+/predict
+```
 
-Return JSON
+### Follow These Principles:
+- Use **nouns** for URLs  
+- Always return **JSON**  
+- Always return **status codes**  
+- Use **versioning** (`/v1/predict`)  
+- Document APIs (FastAPI auto-generates Swagger UI)  
+- Validate inputs (Pydantic models)  
 
-Always return status codes
+---
 
-Use versioning
+# 📍 3.9 API Status Codes
 
-/v1/predict
+| Code | Meaning |
+|------|---------|
+| **200** | Success |
+| **201** | Resource created |
+| **400** | Invalid request |
+| **401** | Unauthorized |
+| **403** | Forbidden |
+| **404** | Not found |
+| **409** | Conflict |
+| **422** | Validation error |
+| **500** | Server error |
 
-Document API with Swagger/OpenAPI (FastAPI auto-generates)
+### Example (Prediction Success)
 
-Validate inputs (use Pydantic models)
-
-📍 3.9 API Status Codes
-Status	Meaning
-200	Success
-201	Resource created
-400	Bad request (invalid input)
-401	Unauthorized
-403	Forbidden
-404	Not found
-409	Conflict
-422	Validation error
-500	Internal server error
-Example (ML prediction success):
+```
 200 OK
 {
   "prediction": "spam"
 }
+```
 
-Example (Bad input):
+### Example (Bad Input)
+
+```
 400 Bad Request
 {
   "error": "age must be an integer"
 }
+```
 
-📍 3.10 Example REST Flow for ML Prediction
-Step-by-step:
+---
 
-1. Client sends input JSON
+# 📍 3.10 Example REST Flow for ML Prediction
 
+## 1️⃣ Client Sends Data
+
+```
 POST /predict
 {
   "review": "This product is great!"
 }
+```
 
+## 2️⃣ Server Processes Input
+- Load model  
+- Preprocess input  
+- Inference  
+- Postprocess  
 
-2. ML server processes input
-Loads model → preprocess → inference → postprocess
+## 3️⃣ Server Returns Model Output
 
-3. Server returns prediction
-
+```
 200 OK
 {
   "sentiment": "positive",
   "score": 0.92
 }
+```
 
-📍 3.11 ML API Example (Simple)
+---
 
-Input:
+# 📍 3.11 Simple ML API Example
 
+### Input
+
+```json
 {
   "x1": 3.2,
   "x2": 1.4
 }
+```
 
+### Output
 
-Output:
-
+```json
 {
   "prediction": 0.73
 }
+```
 
-📍 3.12 Good vs Bad API Design (ML Perspective)
-❌ Bad API Design
+---
+
+# 📍 3.12 Good vs Bad API Design (ML Perspective)
+
+### ❌ Bad
+
+```
 POST /predictModelV3Test
 {
   "json_data": "3,1,5"
 }
+```
 
+**Problems**
+- Terrible naming  
+- No schema  
+- Ambiguous data format  
+- No versioning  
+- Hard to validate  
 
-Problems:
+---
 
-Bad naming
+### ✔️ Good
 
-No schema
-
-Unclear input type
-
-No versioning
-
-Hard to maintain
-
-✔️ Good API Design
+```
 POST /v1/predict
 Content-Type: application/json
 
@@ -282,72 +316,68 @@ Content-Type: application/json
   "petal_length": 5.0,
   "petal_width": 1.8
 }
+```
 
+**Benefits**
+- Clear schema  
+- Proper versioning  
+- Easy to validate  
+- Easy to document  
 
-Benefits:
+---
 
-Clear input schema
+# 📍 3.13 Practice Questions
 
-Versioned endpoint
+1. What is the difference between GET and POST?  
+2. Why is JSON widely used in ML APIs?  
+3. Write a sample POST request for predicting house prices.  
+4. What does “stateless” mean in REST?  
+5. Name three useful status codes for ML APIs.  
 
-Validatable
+---
 
-Easy to document
+# 📍 3.14 Exercises
 
-📍 3.13 Practice Questions
-
-Describe the difference between GET and POST.
-
-Why is JSON widely used in ML APIs?
-
-Write an example HTTP request for predicting house price.
-
-What does “stateless” mean in REST?
-
-List three API status codes you would use in an ML system.
-
-📍 3.14 Exercises
-Exercise 1 — Create a REST Endpoint Spec
-
+### **Exercise 1 — Create a REST Endpoint Spec**
 Write an endpoint definition for:
 
+```
 POST /v1/churn/predict
+```
 
+Include input fields, output format, and status codes.
 
-Include:
+---
 
-Input fields
+### **Exercise 2 — Identify Bad API Design**
 
-Expected output
+Given:
 
-Status codes
-
-Exercise 2 — Identify Problems
-
-Given this API:
-
+```
 POST /getPrediction
 {
   "x": "3.2"
 }
+```
 
+List all the design issues.
 
-List all design problems.
+---
 
-Exercise 3 — Draft JSON Schema
+### **Exercise 3 — JSON Schema for Fraud Detection**
+Write a JSON request body for a fraud detection ML model.
 
-Write a JSON request body for a fraud-detection ML model.
+---
 
-📍 3.15 Summary
+# 📍 3.15 Summary
 
-APIs allow communication between ML models and applications
+- APIs enable communication between ML models and applications  
+- HTTP relies on requests & responses  
+- POST is used for ML prediction  
+- JSON is standard for data exchange  
+- REST encourages scalable, structured API design  
+- Understanding REST is essential before learning FastAPI  
 
-HTTP on the web uses requests & responses
+---
 
-POST is used for ML prediction
-
-JSON is the standard for ML input/output
-
-REST promotes scalable, clean API design
-
-Knowing API fundamentals is essential before learning FastAPI
+# 🎉 End of Chapter 3
