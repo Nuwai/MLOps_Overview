@@ -22,7 +22,7 @@ Machine Learning has unique challenges:
 | Need for reliability   | ML is probabilistic          | Testing + CI/CD + guardrails    |
 
 ## ✨ 1.3 The ML System Lifecycle
-```
+```text
         ┌────────────┐
         │  DATA      │
         │ COLLECTION │
