@@ -68,7 +68,8 @@ Analogy:
 - Data Engineering delivers high-quality data.
 - MLOps delivers continuously improving machine learning systems.
 
-✨ 1.5 The Three Pillars of MLOps
+##✨ 1.5 The Three Pillars of MLOps
+
 1️⃣ Reproducibility
 
 You should be able to re-run an experiment and get the same result.
@@ -109,7 +110,7 @@ larger hardware needs
 
 MLOps ensures systems scale horizontally (Kubernetes, autoscaling).
 
-✨ 1.6 MLOps Tiers (Industry Standard)
+## ✨ 1.6 MLOps Tiers (Industry Standard)
 Tier 0 — Manual ML
 
 - Jupyter notebook
@@ -166,7 +167,7 @@ Tier 3 — Fully Automated ML Platform (Uber, Google, Netflix)
                             └─────────────────┘
 ```
 
-1.8 The MLOps Technology Stack
+## 1.8 The MLOps Technology Stack
 Compute
 
 - AWS EC2
@@ -201,7 +202,7 @@ Monitoring
 - Grafana
 - EvidentlyAI
 
-✨ 1.9 Common MLOps Mistakes
+## ✨ 1.9 Common MLOps Mistakes
 
 ❌ Training on different data than inference
 ❌ No model monitoring
