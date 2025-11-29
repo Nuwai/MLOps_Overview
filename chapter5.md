@@ -91,6 +91,36 @@ COPY . .
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
 ```
+### Dockerfile Instructions Summary Table
+| Instruction          | Purpose                                                     | Example                                                       | Notes                             |         |                     |
+| -------------------- | ----------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------- | ------- | ------------------- |
+| **FROM**             | Sets the base image                                         | `FROM python:3.10`                                            | Must be the first instruction     |         |                     |
+| **LABEL**            | Adds metadata                                               | `LABEL maintainer="you@example.com"`                          | Not required but useful           |         |                     |
+| **WORKDIR**          | Sets working directory inside container                     | `WORKDIR /app`                                                | All next commands run here        |         |                     |
+| **COPY**             | Copies files from host → image                              | `COPY . /app`                                                 | Copies only what you specify      |         |                     |
+| **ADD**              | Like COPY, but allows URLs & auto-extract                   | `ADD data.zip /data`                                          | Prefer COPY unless needed         |         |                     |
+| **RUN**              | Executes commands at build time                             | `RUN pip install -r requirements.txt`                         | Creates a new image layer         |         |                     |
+| **CMD**              | Default command when container starts                       | `CMD ["python", "app.py"]`                                    | Can be overridden by `docker run` |         |                     |
+| **ENTRYPOINT**       | Main command that cannot be overridden                      | `ENTRYPOINT ["python"]`                                       | Often paired with CMD             |         |                     |
+| **EXPOSE**           | Document port (does NOT open it)                            | `EXPOSE 8000`                                                 | Used for documentation only       |         |                     |
+| **ENV**              | Sets environment variables                                  | `ENV ENV=production`                                          | Accessible inside container       |         |                     |
+| **ARG**              | Build-time variables                                        | `ARG VERSION=1.0`                                             | Not available at runtime          |         |                     |
+| **VOLUME**           | Defines mount point for persistent data                     | `VOLUME /var/log`                                             | For data persistence              |         |                     |
+| **USER**             | Switches user                                               | `USER appuser`                                                | Improves security                 |         |                     |
+| **HEALTHCHECK**      | Defines container health test                               | `HEALTHCHECK CMD curl -f [http://localhost](http://localhost) |                                   | exit 1` | Optional but useful |
+| **SHELL**            | Changes default shell                                       | `SHELL ["bash", "-c"]`                                        | Not common                        |         |                     |
+| **ONBUILD**          | Instructions to run when image is used as a base for others | `ONBUILD COPY . /app`                                         | Rare but useful for templates     |         |                     |
+| **STOPSIGNAL**       | Tells container which signal to stop with                   | `STOPSIGNAL SIGTERM`                                          | For graceful shutdown             |         |                     |
+| **ENTRYPOINT + CMD** | Combine to create flexible commands                         | See below                                                     | Very common pattern               |         |                     |
+
+### RUN vs CMD vs ENTRYPOINT
+
+| Command        | Runs When?            | Purpose                          |
+| -------------- | --------------------- | -------------------------------- |
+| **RUN**        | During image build    | Install libs, create directories |
+| **CMD**        | When container starts | Default command                  |
+| **ENTRYPOINT** | When container starts | Fixed main command               |
+
 
 ---
 
@@ -187,13 +217,35 @@ Now your API is available at:
 ```
 http://localhost:8000
 ```
+```
+[ Developer ]
+      |
+Push code
+      ↓
+[ GitHub ]
+      |
+GitHub Actions builds image
+      ↓
+[ Docker Hub / AWS ECR ]
+      |
+Cloud pulls image
+      ↓
+[ AWS ECS / GCP Cloud Run ]
+      |
+Users access API
 
 ---
 
 # 🗂️ 5.8 Docker Compose for MLOps
 
-Useful for multi-container systems:
+Docker Compose is a tool that lets you run multiple containers together using a single file:
+docker-compose.yml.
 
+Instead of starting containers one by one, Compose lets you start everything with:
+
+```docker compose up
+
+- Useful for multi-container systems:
 - API  
 - Database  
 - Redis  
