@@ -452,7 +452,7 @@ Example
 - PHP apps with server-side sessions:
 
 ```session_id=ABC123
-
+```
 
 Server stores:
 
