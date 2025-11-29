@@ -500,7 +500,7 @@ Example
 
 FastAPI running on AWS Lambda:
 
-```POST /predict → triggers a function → returns result → function dies
+```POST /predict → triggers a function → returns result → function dies```
 
 Pros
 
