@@ -174,6 +174,33 @@ async def classify_image(file: UploadFile = File(...)):
 
 # ⚡ 4.10 Async vs Sync
 
+FastAPI allows you to write:
+
+- Regular functions (def) → synchronous
+- Async functions (async def) → asynchronous
+
+### SYNC (Synchronous) — def
+Concept
+-Your function handles one request at a time.
+- While it’s doing something slow (database, ML model, API call), it waits.
+
+Analogy
+
+- Imagine you have one cashier.
+- If they spend time typing something slow, the next customer must wait.
+
+### ASYNC (Asynchronous) — async def
+Concept
+
+- The function does NOT block.
+- While waiting for a slow operation (I/O), the server handles another request.
+
+Analogy
+
+- Imagine you have self-checkout system.
+- If one customer is scanning slowly, the system can handle others.
+
+
 Use `async` for:
 - IO-bound tasks  
 - HTTP requests  
@@ -319,7 +346,22 @@ def predict(data: Input):
     pred = model.predict(X)[0]
     return {"prediction": int(pred)}
 ```
+BaseModel comes from Pydantic, which FastAPI uses for:
 
+#### Request data validation
+
+- FastAPI checks:
+    - Are all 4 fields present?
+    - Are they floats?
+    - Does JSON match the schema?
+- If wrong → FastAPI returns automatic error.
+
+#### Automatic documentation (Swagger UI)
+
+- Your model appears in /docs UI so users know what to send.
+- 
+#### Automatic JSON parsing → Python object
+- can use dot notation: eg data.sepal_length
 ---
 
 # 🖼️ 4.20 Computer Vision Example (Image Classification)
