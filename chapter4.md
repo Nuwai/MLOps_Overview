@@ -262,6 +262,18 @@ Gunicorn (master process)
  ├── Uvicorn worker 2
  ├── Uvicorn worker 3
  └── ...
+
+Client Requests
+       ↓
++----------------+
+|    Gunicorn    |  ← Master process
++----------------+
+   ↙     ↓     ↘
+Uvicorn Uvicorn Uvicorn  ← Workers
+   ↓        ↓       ↓
+FastAPI Application
+
+
 ```
 Why this combination?
 
