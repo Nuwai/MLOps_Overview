@@ -379,5 +379,163 @@ Write a JSON request body for a fraud detection ML model.
 - Understanding REST is essential before learning FastAPI  
 
 ---
+# Useful terminology
 
+## ✅ 1. Stateless Architecture (Most Modern APIs)
+Definition
+
+- A system is stateless when the server does not store any information about the user between requests.
+- Every request is independent and must contain all necessary information.
+
+Analogy
+
+- Imagine ordering food at a restaurant where:
+- The waiter doesn’t remember you.
+- Every time, you must give your full order again.
+
+In API terms
+
+A stateless API works like this:
+```Client → (request+data) → Server → Response → Server forgets
+
+Example
+
+A typical REST API:
+
+```
+GET /profile
+Authorization: Bearer <token>
+
+
+- The server reads the token → verifies → returns profile.
+- The server does not remember you for the next request.
+
+Pros
+
+- Scales easily
+- No session storage needed
+- Easy load balancing (any server can handle any request)
+
+Cons
+
+- Client must send authentication on every request
+---
+## ✅ 2. Stateful Architecture (Old style servers, some DB systems)
+
+Definition
+
+A system is stateful when the server remembers previous interactions.
+
+The server stores:
+
+- Session data
+- User data
+- Past actions
+
+Analogy
+
+- Going to a hair salon where:
+- The stylist remembers your past style
+- You don’t need to re-explain everything every time
+
+In API terms
+
+A stateful server works like this:
+
+```
+Client → Login → Server stores session →  
+Client → next requests → Server uses stored session
+
+Example
+
+- PHP apps with server-side sessions:
+
+```session_id=ABC123
+
+
+Server stores:
+
+- Logged-in user
+- Cart items
+- Preferences
+
+Pros
+
+- Convenient (no need to send full info every time)
+
+Cons
+
+- Harder to scale (session must stay on same server)
+---
+## ✅ 3. Serverless (e.g., AWS Lambda, Cloud Functions)
+Definition
+
+Serverless means:
+
+- You do not manage servers
+- Your code runs on demand
+- It scales automatically
+- You pay only when it runs
+- Misunderstanding warning
+
+❌ “Serverless” does NOT mean “no servers”…
+✔ It means servers are hidden from you.
+
+Analogy
+
+Like taking a taxi:
+
+- You don't own the car (server)
+- You just call when you need it
+- Pay only for the distance used
+
+Characteristics
+
+- Each function execution is short-lived
+- Often stateless
+- You cannot store memory in RAM between requests
+
+Example
+
+FastAPI running on AWS Lambda:
+
+```POST /predict → triggers a function → returns result → function dies
+
+Pros
+
+- Zero maintenance
+- Auto-scaling
+- Cheap for small workloads
+
+Cons
+
+- Cold start delays
+- Not good for long-running tasks
+- Hard to store complex state
+
+Requires sticky sessions or session replication
+
+## 📌 Where They Are Used in Real Life
+
+### Stateless
+
+- FastAPI
+- Django REST
+- Flask APIs
+- AWS API Gateway
+
+### Stateful
+
+- Old PHP apps using $_SESSION
+- WebSockets (connection must be tracked)
+- Games maintaining session data
+
+### Serverless
+
+- AWS Lambda
+- Google Cloud Functions
+- Netlify Functions
+- Vercel serverless API routes
+
+---
 # 🎉 End of Chapter 3
