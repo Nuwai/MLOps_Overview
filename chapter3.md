@@ -445,6 +445,7 @@ A stateful server works like this:
 ```
 Client → Login → Server stores session →  
 Client → next requests → Server uses stored session
+```
 
 Example
 
