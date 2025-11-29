@@ -328,7 +328,6 @@ docker run --gpus all -p 8000:80 myimage
 ```
 
 ---
-
 # 📌 5.14 Common Docker Mistakes in ML
 
 ❌ Installing heavy libs inside container  
@@ -369,3 +368,15 @@ Optimize your Dockerfile using slim images and `.dockerignore`.
 
 ---
 
+# 5.17 useful docker commands
+
+| Task             | Command                     |
+| ---------------- | --------------------------- |
+| Build image      | `docker build -t name .`    |
+| Run container    | `docker run name`           |
+| List images      | `docker images`             |
+| List containers  | `docker ps -a`              |
+| Stop container   | `docker stop <id>`          |
+| Remove container | `docker rm <id>`            |
+| Remove image     | `docker rmi name`           |
+| Enter container  | `docker exec -it <id> bash` |
