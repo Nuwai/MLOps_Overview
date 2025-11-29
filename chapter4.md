@@ -220,6 +220,71 @@ Use **Gunicorn + Uvicorn workers**:
 gunicorn -k uvicorn.workers.UvicornWorker main:app --workers 4
 ```
 
+# Uvicorn vs Gunicorn (For FastAPI)
+
+## 🦄 What is Uvicorn?
+
+**Uvicorn is an ASGI web server**.
+
+FastAPI requires an **ASGI (Asynchronous Server Gateway Interface)** server to run, and Uvicorn is the most common and fastest one.
+
+### Key points:
+- Lightweight and extremely fast  
+- Runs asynchronous Python apps (FastAPI, Starlette)  
+- Good for development and small production workloads  
+
+### Example (Development):
+```bash
+uvicorn main:app --reload
+```
+
+## What is Gunicorn?
+
+- Gunicorn is a process manager.
+- It is widely used to run Python web apps in production.
+- Gunicorn itself cannot run FastAPI directly because it supports WSGI, not ASGI.
+- But it can run FastAPI when paired with Uvicorn workers.
+
+Key points:
+
+- Process manager for scaling
+- Restarts crashed workers
+- Controls multiple Uvicorn instances
+- Used for high-traffic production environments
+
+### Uvicorn + Gunicorn (Production Best Practice)
+
+For real production deployment, the recommended setup is:
+
+```
+Gunicorn (master process)
+ ├── Uvicorn worker 1
+ ├── Uvicorn worker 2
+ ├── Uvicorn worker 3
+ └── ...
+```
+Why this combination?
+
+- Gunicorn manages worker processes
+- Uvicorn serves the FastAPI app using ASGI
+- The combination gives speed + stability + scaling
+
+```gunicorn main:app \
+    --workers 4 \
+    --worker-class uvicorn.workers.UvicornWorker
+```
+### Summary table
+
+| Feature                | Uvicorn                | Gunicorn                   |
+| ---------------------- | ---------------------- | -------------------------- |
+| Type                   | ASGI server            | Process manager            |
+| Runs FastAPI directly? | Yes                    | No (needs Uvicorn workers) |
+| Best for               | Development, async I/O | Production scaling         |
+| Async support          | Yes                    | No                         |
+| Handles                | Async requests         | Multiple worker processes  |
+| Advantage              | Fast event loop        | Stability + scaling        |
+
+
 ---
 
 # 🔐 4.12 Environment Variables
